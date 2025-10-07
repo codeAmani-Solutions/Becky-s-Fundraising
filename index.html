@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Becky's Recovery & Prayer Fund Dashboard</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for aesthetic flair */
+        :root {
+            --primary-color: #DB2777; /* Deep Pink */
+            --secondary-color: #FBCFEA; /* Light Pink */
+            --accent-color: #FDE047; /* Yellow/Gold */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Light Gray/Off-White */
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+            transition: transform 0.3s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-2px);
+        }
+        .total-box {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #F472B6 100%);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.01); }
+        }
+        .contribution-item:nth-child(even) {
+            background-color: #FEF3C7; /* Light Gold for alternating rows */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl sm:text-5xl font-extrabold text-gray-900 mb-2">
+                <span class="text-pink-600">Becky's Healing & Thanksgiving Fund</span>
+            </h1>
+            <p class="text-lg text-gray-500">💕 Happy Tuesday Dear One's 💕</p>
+        </header>
+
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Recovery Update & Prayer Request Column (Span 2 on large screens) -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <!-- Main Update Card -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl card-shadow border-t-4 border-pink-500">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-6 h-6 text-pink-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                        A Tremendous Update!
+                    </h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Many thanks for the tremendous support you have continued to show sis **Becky and family**. It’s amazing how unified prayers have moved mountains. <span class="text-pink-500 font-bold">She is healing gently at home! Glory to God.</span>
+                        <br><br>
+                        Becky had doctor's follow-up appointments since discharge. Her road to recovery per the medical doctors is estimated to take **over 6 months** due to traumatic brain injury. Let us continue uplifting the entire family in prayers as they navigate this recovery journey.
+                        <br><br>
+                        The family would like to join in this group for prayers and thanksgiving, as we plan to close the group sometime **end of next week**.
+                    </p>
+                </div>
+
+                <!-- Contributions List -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl card-shadow">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c1.657 0 3 .895 3 2s-1.343 2-3 2l-2-1m-2 1h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        Contributions Received (112 Donors)
+                    </h2>
+                    <div id="contributions-list" class="space-y-1 max-h-96 overflow-y-auto pr-2">
+                        <!-- Contributions will be injected here by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary & Action Items Column -->
+            <div class="lg:col-span-1 space-y-8">
+                
+                <!-- Total Amount Card -->
+                <div class="total-box text-white p-6 sm:p-8 rounded-2xl card-shadow">
+                    <p class="text-sm uppercase font-semibold opacity-80 mb-2">Total Funds Raised</p>
+                    <div class="flex items-end justify-between">
+                        <h3 class="text-4xl sm:text-5xl font-extrabold" id="total-amount">
+                            $0.00
+                        </h3>
+                        <svg class="w-10 h-10 text-yellow-300" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                    </div>
+                </div>
+
+                <!-- Zoom Meeting & Payment Info Card -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl card-shadow border-l-4 border-yellow-400">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Prayer & Thanksgiving Meeting</h3>
+                    <div class="space-y-3">
+                        <p class="text-gray-700 font-medium flex items-center">
+                            <svg class="w-5 h-5 text-pink-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                            <span class="font-bold">Date:</span> Next Week Tuesday
+                        </p>
+                        <p class="text-gray-700 font-medium flex items-center">
+                            <svg class="w-5 h-5 text-pink-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>
+                            <span class="font-bold">Time:</span> 8:00 PM
+                        </p>
+                        <p class="text-gray-700 font-medium flex items-center">
+                            <svg class="w-5 h-5 text-pink-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-2 3v-3H4a2 2 0 01-2-2V5z"></path><path d="M15 7v2a4 4 0 01-4 4H9.848l1.794 1.793a1 1 0 01-1.414 1.414L8.007 14H15a3 3 0 003-3V9a2 2 0 00-2-2h-1z"></path></svg>
+                            <span class="font-bold">Link:</span> To be shared here soon.
+                        </p>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-gray-800 mt-6 mb-3">Contribution Channels</h3>
+                    <p class="text-sm text-gray-500 mb-2">Husband: Samson Wagacha</p>
+                    <div class="space-y-2">
+                        <div class="bg-yellow-50 p-3 rounded-lg flex justify-between items-center text-sm font-semibold text-gray-700">
+                            Cash App: <span class="text-pink-600">$Samwagacha</span>
+                        </div>
+                        <div class="bg-yellow-50 p-3 rounded-lg flex justify-between items-center text-sm font-semibold text-gray-700">
+                            Zelle: <span class="text-pink-600">(815) 280-8479</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const contributions = [
+            { name: "Queens Beckys florida Chama group", amount: 2000.00 },
+            { name: "Neema &Jeff", amount: 100.00 },
+            { name: "Lydia Mwangi", amount: 100.00 },
+            { name: "David Ngige", amount: 200.00 },
+            { name: "Njira Njeri (Martha)", amount: 100.00 },
+            { name: "Isaiah Wachira", amount: 500.00 },
+            { name: "Jeff Mburu", amount: 100.00 },
+            { name: "Evinn", amount: 75.00 },
+            { name: "Sam Ngaruiya", amount: 100.00 },
+            { name: "Festus Nyasimi", amount: 50.00 },
+            { name: "Lynette Kamiti", amount: 50.00 },
+            { name: "Ann Mbuthia", amount: 100.00 },
+            { name: "Elizabeth Milandi", amount: 100.00 },
+            { name: "Peter Karugu", amount: 100.00 },
+            { name: "Naftali Mwaniki", amount: 200.00 },
+            { name: "Anne Kimani", amount: 100.00 },
+            { name: "Jane Hoblock", amount: 100.00 },
+            { name: "Bishop Pau& Pst Ann", amount: 100.00 },
+            { name: "Thuku & Darma", amount: 200.00 },
+            { name: "Terrence &Marion", amount: 100.00 },
+            { name: "Nova &Pam", amount: 200.00 },
+            { name: "Wilson & Susan", amount: 100.00 },
+            { name: "Simon & Sarah", amount: 700.00 },
+            { name: "Nobs & Kate", amount: 200.00 },
+            { name: "Irene Wachira", amount: 100.00 },
+            { name: "Tina Tamoi", amount: 200.00 },
+            { name: "Godfrey & Emily Gitogo", amount: 2800.00 },
+            { name: "Jack &Njeri Chege", amount: 200.00 },
+            { name: "Petronilla David", amount: 100.00 },
+            { name: "John and Lilian Kishe", amount: 150.00 },
+            { name: "Joe & Kezia", amount: 500.00 },
+            { name: "Morris &Rebecca W", amount: 250.00 },
+            { name: "David Mbaire", amount: 150.00 },
+            { name: "Joseph Gekara", amount: 100.00 },
+            { name: "Mukulu", amount: 100.00 },
+            { name: "Njenga wa Mukami", amount: 100.00 },
+            { name: "Tosh &Agnes kimathi", amount: 100.00 },
+            { name: "Gerald & Shiku", amount: 250.00 },
+            { name: "Mr & Mrs Blake", amount: 100.00 },
+            { name: "Lilian & Jeff", amount: 100.00 },
+            { name: "Dicky & Maggie K", amount: 100.00 },
+            { name: "Muthoni Otwoma", amount: 50.00 },
+            { name: "Mary Kym", amount: 150.00 },
+            { name: "John & Grace Muhia", amount: 200.00 },
+            { name: "Sailas & Grace", amount: 300.00 },
+            { name: "Kanyi & Gladys", amount: 300.00 },
+            { name: "David & Ann Kimani", amount: 100.00 },
+            { name: "Imaq,Josh, Jonah, Josh, & Nella", amount: 500.00 },
+            { name: "Susan & Warren", amount: 400.00 },
+            { name: "Liz Mugo", amount: 100.00 },
+            { name: "Eddie & Judy", amount: 100.00 },
+            { name: "Joel & Curry", amount: 100.00 },
+            { name: "Mr &Mrs Eric Maina", amount: 200.00 },
+            { name: "Mr.&MrsPetersonMwangi", amount: 200.00 },
+            { name: "Rose Wambugu", amount: 100.00 },
+            { name: "Ed Mwangi", amount: 100.00 },
+            { name: "Frank Njoroge& Rachel M", amount: 200.00 },
+            { name: "Marystella Waffubwa", amount: 50.00 },
+            { name: "James &Salome", amount: 200.00 },
+            { name: "BspJohn &Pst Cathy K", amount: 100.00 },
+            { name: "Edna Kimanzi", amount: 100.00 },
+            { name: "Pst Dennis &Betty Tesot", amount: 100.00 },
+            { name: "Harry & Penny", amount: 100.00 },
+            { name: "Elizabeth Wanjiru", amount: 100.00 },
+            { name: "Caroline Thiongo", amount: 100.00 },
+            { name: "Grace Maungu", amount: 100.00 },
+            { name: "Endita & Ian", amount: 100.00 },
+            { name: "Rubi Muturi", amount: 100.00 },
+            { name: "John Muchabi", amount: 150.00 },
+            { name: "Isaac Ngigi", amount: 300.00 },
+            { name: "Fred Muhanji", amount: 150.00 },
+            { name: "Samuel Kimiti", amount: 150.00 },
+            { name: "Stephen Masha", amount: 100.00 },
+            { name: "Edwin Oroko", amount: 100.00 },
+            { name: "Daniel Kirwa", amount: 100.00 },
+            { name: "Lincoln Wagacha", amount: 200.00 },
+            { name: "Austin & Emma", amount: 150.00 },
+            { name: "Peter Oduori", amount: 100.00 },
+            { name: "Benard Ndege", amount: 100.00 },
+            { name: "David Kimani", amount: 100.00 },
+            { name: "Timothy Sirkoi", amount: 100.00 },
+            { name: "Douglas", amount: 100.00 },
+            { name: "Bob Mwiti", amount: 100.00 },
+            { name: "Wilson Njenga", amount: 100.00 },
+            { name: "Anthony Kimani", amount: 100.00 },
+            { name: "Jeremy Kemboi", amount: 100.00 },
+            { name: "Mathew & Doreen", amount: 38.97 },
+            { name: "Joyce Gachanja", amount: 70.00 },
+            { name: "Susan & Terry Ductan", amount: 100.00 },
+            { name: "Abija Muembu", amount: 100.00 },
+            { name: "Jane Lydia", amount: 100.00 },
+            { name: "Caroline Lugalia", amount: 50.00 },
+            { name: "Sam & Tabitha", amount: 100.00 },
+            { name: "Sam& Rahab", amount: 100.00 },
+            { name: "Loise &Ron", amount: 100.00 },
+            { name: "Beatrice Kamau", amount: 50.00 },
+            { name: "James &Ann Kimani", amount: 200.00 },
+            { name: "Eliza&Kimani", amount: 100.00 },
+            { name: "Veronica Williams", amount: 100.00 },
+            { name: "Mueni & Ambrose", amount: 100.00 },
+            { name: "Laura Wright", amount: 100.00 },
+            { name: "Mr & Mrs Gatete", amount: 200.00 },
+            { name: "Bella Kaburu", amount: 250.00 },
+            { name: "Margret Kuria", amount: 100.00 },
+            { name: "Damaris Mbugua", amount: 100.00 },
+            { name: "care Lucy Waweru", amount: 100.00 },
+            { name: "James, Emily & Family", amount: 200.00 },
+            { name: "Phloice Odawa", amount: 100.00 },
+            { name: "Caroline Karanja", amount: 100.00 },
+            { name: "Jeniffer Mulili", amount: 100.00 },
+            { name: "David &Fatuma Towett", amount: 250.00 },
+            { name: "Kamau & Angelica", amount: 200.00 }
+        ];
+
+        function calculateAndDisplayTotal() {
+            // Calculate the total amount
+            const total = contributions.reduce((sum, item) => sum + item.amount, 0);
+            
+            // Format the total with commas and two decimal places
+            const formattedTotal = total.toLocaleString('en-US', {
+                style: 'currency',
+                currency: 'USD',
+            });
+            
+            // Update the display
+            document.getElementById('total-amount').textContent = formattedTotal;
+            
+            // Render the list of contributions
+            const listContainer = document.getElementById('contributions-list');
+            listContainer.innerHTML = contributions.map((item, index) => `
+                <div class="contribution-item flex justify-between p-3 rounded-xl hover:shadow-md transition duration-150">
+                    <span class="text-sm text-gray-800 font-medium">${index + 1}. ${item.name}</span>
+                    <span class="text-sm font-bold text-green-700">
+                        ${item.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                        <span class="text-green-500 ml-1">✅</span>
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        // Run the function when the page loads
+        window.onload = calculateAndDisplayTotal;
+    </script>
+</body>
+</html>
