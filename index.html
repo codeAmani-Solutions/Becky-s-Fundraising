@@ -7,6 +7,22 @@
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Firebase Imports -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, onSnapshot, setDoc, arrayUnion, arrayRemove, collection, addDoc, query, orderBy, limit, serverTimestamp, getDocs, updateDoc, writeBatch } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // Expose Firebase objects globally for use in the main script block
+        window.firebase = { 
+            initializeApp, getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, 
+            getFirestore, doc, onSnapshot, setDoc, arrayUnion, arrayRemove, collection, addDoc, 
+            query, orderBy, limit, serverTimestamp, getDocs, updateDoc, writeBatch 
+        };
+        // Set Firebase log level to debug for console visibility
+        setLogLevel('Debug');
+    </script>
     <style>
         /* Custom styles for aesthetic flair */
         :root {
@@ -28,13 +44,20 @@
         .contribution-item:nth-child(even) {
             background-color: #FEF3C7; /* Light Gold for alternating rows */
         }
-        .total-row {
-            background-color: #FDE68A; /* Darker Gold/Amber for total */
-            border-top: 2px solid #D97706;
-        }
         .disclaimer-card {
             background-color: #FEE2E2; /* Red-100 */
             border-left: 4px solid #EF4444; /* Red-500 */
+        }
+        .upvote-button {
+            transition: all 0.2s;
+        }
+        .upvote-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(219, 39, 119, 0.4);
+        }
+        .upvote-button.voted {
+            background-color: #EC4899; /* Pink-500 */
+            color: white;
         }
     </style>
 </head>
@@ -65,23 +88,55 @@
                             <!-- Contributions will be injected here by JavaScript -->
                         </div>
                     </div>
-                    <!-- Total is now statically inserted here -->
-                    <div id="total-display" class="mt-4">
-                         <div class="total-row flex justify-between p-4 rounded-xl shadow-lg mt-4">
-                            <span class="text-lg font-extrabold text-gray-900">Calculated Grand Total</span>
-                            <span class="text-lg font-extrabold text-pink-700">$18,108.97</span>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- NEW: Discrepancy Disclaimer (Below Contributions List) -->
                 <div class="disclaimer-card p-4 rounded-lg card-shadow">
                     <p class="text-sm font-semibold text-red-700">
-                        <span class="font-extrabold">NOTE ON TOTALS:</span> We sincerely apologize for a previous technical error that incorrectly displayed the total as $20,733.97. The corrected, verified total of the 112 itemized contributions shown above is **$18,108.97**.
+                        <span class="font-extrabold">NOTE ON TOTALS:</span> We sincerely apologize for a previous technical error that incorrectly displayed the total as $20,733.97.
                     </p>
                     <p class="text-sm text-red-600 mt-2">
                         **We ask all contributors to please verify their amount in the table above and report any discrepancies immediately** via the Contact Us link in the footer. Thank you for your understanding.
                     </p>
+                </div>
+
+                <!-- NEW: Community Verification Section -->
+                <div class="bg-white p-6 sm:p-8 rounded-2xl card-shadow border-t-4 border-blue-500">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                         <svg class="w-6 h-6 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.103a2.007 2.007 0 00-.12-.413A2 2 0 0017 4h-4a2 2 0 00-2 2v2M4 7V4a2 2 0 012-2h4M4 7V4a2 2 0 012-2h4m10 0v3a2 2 0 01-2 2h-4a2 2 0 01-2-2V2"></path></svg>
+                        Help Us Review & Confirm the total contributions
+                    </h2>
+                    <p class="text-gray-600 mb-4">
+                        Please review the itemized list above and use the tools below to submit your verification or suggested total.
+                    </p>
+
+                    <!-- Thumbs-Up Agreement -->
+                    <div class="border p-4 rounded-xl bg-green-50 border-green-200 mb-6 flex flex-col items-center">
+                        <p class="text-md font-semibold text-gray-700 mb-3">Do you agree with the calculated total from the list?</p>
+                        <button id="upvote-button" onclick="handleUpvote()" class="upvote-button flex items-center justify-center space-x-2 px-6 py-3 text-lg font-bold rounded-full bg-pink-500 text-white shadow-lg">
+                            <svg id="thumbs-up-icon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 10.5a1.5 1.5 0 113 0v1.5a1 1 0 001 1h4a1 1 0 001-1v-4a1 1 0 00-1-1h-.5a2.5 2.5 0 01-2.5-2.5v-2c0-1.105-.895-2-2-2a2 2 0 00-2 2v2.5a.5.5 0 00.5.5h.5zm.707 7.707A1 1 0 003 18.5h14a1 1 0 00.707-.293l1-1a1 1 0 000-1.414l-1-1a1 1 0 00-1.414 0L15 15.586l-1.293-1.293a1 1 0 00-1.414 0L11 15.586l-1.293-1.293a1 1 0 00-1.414 0L7 15.586l-1.293-1.293a1 1 0 00-1.414 0L3 15.586l-1-1a1 1 0 00-1.414 0l-1 1a1 1 0 000 1.414l1 1A1 1 0 003 18.5z" clip-rule="evenodd"></path></svg>
+                            <span id="upvote-count">0</span>
+                            <span id="upvote-text">Agree with Total</span>
+                        </button>
+                    </div>
+
+                    <!-- Submission Form -->
+                    <h3 class="text-xl font-bold text-gray-800 mb-3">Suggest a Different Total</h3>
+                    <div class="space-y-4">
+                        <input type="number" id="suggested-total" placeholder="Enter suggested total (e.g., 17063.97)" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" id="suggested-name" placeholder="Your Name (Optional)" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <button onclick="submitTotalSuggestion()" class="w-full px-4 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-150">
+                            Submit Suggestion
+                        </button>
+                    </div>
+
+                    <!-- Display Submissions -->
+                    <h4 class="text-lg font-bold text-gray-800 mt-6 mb-3">Recent Suggestions</h4>
+                    <div id="suggestions-list" class="space-y-2 max-h-48 overflow-y-auto border p-3 rounded-lg bg-gray-50">
+                        <p class="text-gray-500 text-sm">No suggestions yet...</p>
+                    </div>
+                    <p id="submission-message" class="mt-3 text-sm font-medium text-center"></p>
+
                 </div>
                 
                 <!-- Action Channels Card (3rd) -->
@@ -106,7 +161,7 @@
                     <div class="space-y-3">
                         <p class="text-gray-700 font-medium flex items-center">
                             <svg class="w-5 h-5 text-pink-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
-                            <span class="font-bold">Date:</span> Tuesday 10/07/2025
+                            <span class="font-bold">Date:</span> Next Week Tuesday
                         </p>
                         <p class="text-gray-700 font-medium flex items-center">
                             <svg class="w-5 h-5 text-pink-500 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l3 3a1 1 0 001.414-1.414L11 9.586V6z" clip-rule="evenodd"></path></svg>
@@ -162,9 +217,10 @@
     <!-- END FOOTER SECTION -->
 
     <script>
+        // Contribution data remains constant for itemized list display
         const contributions = [
-            { name: "Queens Beckys florida Chama group", amount: 2000.00 },
-            { name: "Neema &Jeff", amount: 100.00 },
+            { name: "Queens Beckys Florida Chama group", amount: 2000.00 },
+            { name: "Neema & Jeff", amount: 100.00 },
             { name: "Lydia Mwangi", amount: 100.00 },
             { name: "David Ngige", amount: 200.00 },
             { name: "Njira Njeri (Martha)", amount: 100.00 },
@@ -249,7 +305,7 @@
             { name: "Wilson Njenga", amount: 100.00 },
             { name: "Anthony Kimani", amount: 100.00 },
             { name: "Jeremy Kemboi", amount: 100.00 },
-            { name: "Mathew & Doreen (Ksh.5000 equivalent)", amount: 38.97 }, /* Updated description, kept value */
+            { name: "Mathew & Doreen (Ksh.5000 equivalent)", amount: 38.97 }, 
             { name: "Joyce Gachanja", amount: 70.00 },
             { name: "Susan & Terry Ductan", amount: 100.00 },
             { name: "Abija Muembu", amount: 100.00 },
@@ -260,7 +316,7 @@
             { name: "Loise &Ron", amount: 100.00 },
             { name: "Beatrice Kamau", amount: 50.00 },
             { name: "James &Ann Kimani", amount: 200.00 },
-            { name: "Eliza&Kimani", amount: 100.00 },
+            { name: "Eliza & Kimani", amount: 100.00 },
             { name: "Veronica Williams", amount: 100.00 },
             { name: "Mueni & Ambrose", amount: 100.00 },
             { name: "Laura Wright", amount: 100.00 },
@@ -268,24 +324,167 @@
             { name: "Bella Kaburu", amount: 250.00 },
             { name: "Margret Kuria", amount: 100.00 },
             { name: "Damaris Mbugua", amount: 100.00 },
-            { name: "Lucy Waweru (zLucy Waweru)", amount: 100.00 }, /* Clarified name */
+            { name: "Lucy Waweru (Lucy Waweru)", amount: 100.00 }, 
             { name: "James, Emily & Family", amount: 200.00 },
             { name: "Phloice Odawa", amount: 100.00 },
             { name: "Caroline Karanja", amount: 100.00 },
             { name: "Jeniffer Mulili", amount: 100.00 },
-            { name: "David &Fatuma Towett", amount: 250.00 },
+            { name: "David & Fatuma Towett", amount: 250.00 },
             { name: "Kamau & Angelica", amount: 200.00 },
         ];
 
-        function calculateAndDisplayTotal() {
-            // Calculate the total amount
-            // NOTE: Total calculation is now only used internally for logging, as the display is hardcoded to bypass environment issues.
-            const total = contributions.reduce((sum, item) => sum + item.amount, 0);
-            
-            // Log the calculated total for reference: $18,108.97
-            console.log(`Calculated Itemized Total (Internal Reference): $${total.toFixed(2)}`);
+        let db, auth, userId, upvoteStatusDocRef, upvotersArray = [];
+        const APP_ID = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        //const VERIFIED_TOTAL = 18108.97; // The sum of the 112 contributions
 
-            // Render the list of contributions
+        // --- Core Firebase Setup ---
+        async function initializeAppAndAuth() {
+            try {
+                const firebaseConfig = JSON.parse(typeof __firebase_config !== 'undefined' ? __firebase_config : '{}');
+                const app = firebase.initializeApp(firebaseConfig);
+                db = firebase.getFirestore(app);
+                auth = firebase.getAuth(app);
+
+                const token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+                if (token) {
+                    await firebase.signInWithCustomToken(auth, token);
+                } else {
+                    await firebase.signInAnonymously(auth);
+                }
+                
+                // Set the userId after successful sign-in
+                userId = auth.currentUser?.uid || crypto.randomUUID();
+                console.log(`Firebase initialized. User ID: ${userId}`);
+
+                upvoteStatusDocRef = firebase.doc(db, `artifacts/${APP_ID}/public/data/total_upvotes/status`);
+                
+                // Start listening for data changes
+                setupFirebaseListeners();
+
+            } catch (error) {
+                console.error("Error initializing Firebase:", error);
+            }
+        }
+        
+        // --- Firebase Listeners ---
+        function setupFirebaseListeners() {
+            // Listener for Upvote Count (Real-time)
+            firebase.onSnapshot(upvoteStatusDocRef, (docSnap) => {
+                const upvoteButton = document.getElementById('upvote-button');
+                const upvoteCount = document.getElementById('upvote-count');
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    upvotersArray = data.upvoters || [];
+                    upvoteCount.textContent = upvotersArray.length;
+
+                    // Update button state based on current user's vote
+                    if (upvotersArray.includes(userId)) {
+                        upvoteButton.classList.add('voted');
+                        document.getElementById('upvote-text').textContent = 'You Agree!';
+                    } else {
+                        upvoteButton.classList.remove('voted');
+                        document.getElementById('upvote-text').textContent = 'Agree with Total';
+                    }
+                } else {
+                    upvotersArray = [];
+                    upvoteCount.textContent = 0;
+                }
+            }, (error) => console.error("Upvote listener error:", error));
+
+            // Listener for Total Suggestions (Real-time)
+            const suggestionsQuery = firebase.query(
+                firebase.collection(db, `artifacts/${APP_ID}/public/data/total_suggestions`),
+                firebase.orderBy('timestamp', 'desc'),
+                firebase.limit(5)
+            );
+
+            firebase.onSnapshot(suggestionsQuery, (snapshot) => {
+                const suggestionsList = document.getElementById('suggestions-list');
+                if (snapshot.empty) {
+                    suggestionsList.innerHTML = '<p class="text-gray-500 text-sm">No suggestions yet...</p>';
+                    return;
+                }
+
+                suggestionsList.innerHTML = snapshot.docs.map(doc => {
+                    const data = doc.data();
+                    const name = data.name || 'Anonymous';
+                    const formattedTotal = Number(data.suggestedTotal).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                    const time = data.timestamp ? new Date(data.timestamp.toDate()).toLocaleTimeString() : '';
+
+                    return `
+                        <div class="p-2 border-b border-gray-200 text-sm flex justify-between items-center">
+                            <span class="font-bold text-blue-700">${formattedTotal}</span>
+                            <span class="text-gray-600">${name}</span>
+                            <span class="text-gray-400 text-xs">${time}</span>
+                        </div>
+                    `;
+                }).join('');
+            }, (error) => console.error("Suggestion listener error:", error));
+        }
+
+        // --- Upvote Handler ---
+        async function handleUpvote() {
+            if (!userId) return;
+
+            const isVoted = upvotersArray.includes(userId);
+            const action = isVoted ? firebase.arrayRemove(userId) : firebase.arrayUnion(userId);
+            const messageElement = document.getElementById('submission-message');
+
+            try {
+                await firebase.setDoc(upvoteStatusDocRef, { 
+                    upvoters: action 
+                }, { merge: true });
+
+                messageElement.className = 'mt-3 text-sm font-medium text-center text-green-600';
+                messageElement.textContent = isVoted ? "Vote removed." : "Vote recorded! Thank you for verifying.";
+            } catch (error) {
+                console.error("Error updating upvote:", error);
+                messageElement.className = 'mt-3 text-sm font-medium text-center text-red-600';
+                messageElement.textContent = "Error updating vote. Please try again.";
+            }
+            setTimeout(() => messageElement.textContent = '', 3000);
+        }
+
+
+        // --- Submission Handler ---
+        async function submitTotalSuggestion() {
+            const totalInput = document.getElementById('suggested-total');
+            const nameInput = document.getElementById('suggested-name');
+            const messageElement = document.getElementById('submission-message');
+            
+            const suggestedTotal = parseFloat(totalInput.value);
+            const name = nameInput.value.trim();
+
+            if (isNaN(suggestedTotal) || suggestedTotal <= 0) {
+                messageElement.className = 'mt-3 text-sm font-medium text-center text-red-600';
+                messageElement.textContent = "Please enter a valid amount.";
+                setTimeout(() => messageElement.textContent = '', 3000);
+                return;
+            }
+
+            try {
+                await firebase.addDoc(firebase.collection(db, `artifacts/${APP_ID}/public/data/total_suggestions`), {
+                    suggestedTotal: suggestedTotal,
+                    name: name,
+                    userId: userId,
+                    timestamp: firebase.serverTimestamp()
+                });
+
+                messageElement.className = 'mt-3 text-sm font-medium text-center text-green-600';
+                messageElement.textContent = "Suggestion submitted! Thank you for your input.";
+                totalInput.value = '';
+                nameInput.value = '';
+            } catch (error) {
+                console.error("Error submitting suggestion:", error);
+                messageElement.className = 'mt-3 text-sm font-medium text-center text-red-600';
+                messageElement.textContent = "Error submitting suggestion. Please try again.";
+            }
+            setTimeout(() => messageElement.textContent = '', 3000);
+        }
+
+
+        // --- List Rendering (Unchanged) ---
+        function renderContributions() {
             const listContainer = document.getElementById('contributions-list');
             
             listContainer.innerHTML = contributions.map((item, index) => {
@@ -299,12 +498,13 @@
                     </div>
                 `;
             }).join('');
-            
-            // The total display is now fully static in the HTML to ensure accuracy.
         }
 
         // Run the function when the page loads
-        window.onload = calculateAndDisplayTotal;
+        window.onload = () => {
+            renderContributions();
+            initializeAppAndAuth();
+        };
     </script>
 </body>
 </html>
