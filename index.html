@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- The viewport meta tag is crucial for responsive design -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Becky's Support Group Fundraising</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,25 +12,36 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+        /* Style for loading spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    <!-- The container is centered with horizontal padding that works well on mobile (px-4) -->
     <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
 
         <!-- Header -->
         <header class="text-center mb-8 md:mb-12">
-            <!-- Font size is smaller on mobile and larger on medium screens (md:) and up -->
             <h1 class="text-3xl md:text-4xl font-bold text-pink-600">Becky's Support Group</h1>
             <p class="mt-2 text-md text-gray-600">💕 Happy Tuesday Dear One's 💕</p>
         </header>
 
         <!-- Total Summary Card -->
-        <!-- Padding and text size are adjusted for mobile (p-6, text-4xl) vs. larger screens (sm:) -->
         <div class="bg-indigo-600 text-white rounded-xl shadow-lg p-6 sm:p-8 mb-10 text-center">
             <h2 class="text-lg font-medium text-indigo-200">Total Contributions Received</h2>
-            <p class="text-4xl sm:text-5xl font-bold tracking-tight mt-2">$20,933.97</p>
+            <p id="totalAmount" class="text-4xl sm:text-5xl font-bold tracking-tight mt-2">$0.00</p>
         </div>
         
         <!-- Search Input -->
@@ -47,7 +57,6 @@
         </div>
 
         <!-- Update, Contribution, and Zoom sections -->
-        <!-- This grid is a single column on mobile and switches to two columns on large screens (lg:) -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
             <!-- Tremendous Update Card -->
             <div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-pink-500">
@@ -96,205 +105,9 @@
         </div>
 
         <!-- Contributions Grid -->
-        <!-- This grid is a single column on mobile and switches to two columns on medium screens (md:) -->
+        <!-- This container will be filled dynamically by JavaScript -->
         <div id="contributionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            <!-- Group 1-10 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 1-10: <span class="font-bold text-indigo-600">$3,325.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Queens Beckys Florida Chama group</span><span class="contributor-amount font-mono font-semibold text-green-700">$2,000.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Neema & Jeff</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Lydia Mwangi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">David Ngige</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Njira Njeri (Martha)</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Isaiah Wachira</span><span class="contributor-amount font-mono font-semibold text-green-700">$500.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jeff Mburu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Evinn</span><span class="contributor-amount font-mono font-semibold text-green-700">$75.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Sam Ngaruiya</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Festus Nyasimi</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 11-20 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 11-20: <span class="font-bold text-indigo-600">$1,150.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Lynette Kamiti</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Ann Mbuthia</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Elizabeth Milandi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Peter Karugu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Naftali Mwaniki</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Anne Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jane Hoblock</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Bishop Pau & Pst Ann</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Thuku & Darma</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Terrence & Marion</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 21-30 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 21-30: <span class="font-bold text-indigo-600">$4,850.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Nova & Pam</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Wilson & Susan</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Simon & Sarah</span><span class="contributor-amount font-mono font-semibold text-green-700">$700.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Nobs & Kate</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Irene Wachira</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Tina Tamoi</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Godfrey & Emily Gitogo</span><span class="contributor-amount font-mono font-semibold text-green-700">$2,800.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jack & Njeri Chege</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Petronilla David</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">John and Lilian Kishe</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                </ul>
-            </div>
-            
-            <!-- Group 31-40 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 31-40: <span class="font-bold text-indigo-600">$1,800.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joe & Kezia</span><span class="contributor-amount font-mono font-semibold text-green-700">$500.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Morris & Rebecca W</span><span class="contributor-amount font-mono font-semibold text-green-700">$250.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">David Mbaire</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joseph Gekara</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mukulu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Njenga wa Mukami</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Tosh & Agnes Kimathi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Gerald & Shiku</span><span class="contributor-amount font-mono font-semibold text-green-700">$250.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mr & Mrs Blake</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Lilian & Jeff</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 41-50 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 41-50: <span class="font-bold text-indigo-600">$2,250.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Dicky & Maggie K</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Muthoni Otwoma</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mary Kym</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">John & Grace Muhia</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Sailas & Grace</span><span class="contributor-amount font-mono font-semibold text-green-700">$300.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Kanyi & Gladys</span><span class="contributor-amount font-mono font-semibold text-green-700">$300.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">David & Ann Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Imaq, Josh, Jonah, Josh, & Nella</span><span class="contributor-amount font-mono font-semibold text-green-700">$500.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Susan & Warren</span><span class="contributor-amount font-mono font-semibold text-green-700">$400.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Liz Mugo</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 51-60 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 51-60: <span class="font-bold text-indigo-600">$1,350.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Eddie & Judy</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joel & Curry</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mr & Mrs Eric Maina</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mr & Mrs Peterson Mwangi</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Rose Wambugu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Ed Mwangi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Frank Njoroge & Rachel M</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Marystella Waffubwa</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">James & Salome</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Bsp John & Pst Cathy K</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 61-70 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 61-70: <span class="font-bold text-indigo-600">$1,250.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Edna Kimanzi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Pst Dennis & Betty Tesot</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Harry & Penny</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Elizabeth Wanjiru</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Caroline Thiongo</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Grace Maungu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Endita & Ian</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Rubi Muturi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">John Muchabi</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Isaac Ngigi</span><span class="contributor-amount font-mono font-semibold text-green-700">$300.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 71-80 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 71-80: <span class="font-bold text-indigo-600">$1,250.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Fred Muhanji</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Samuel Kimiti</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Stephen Masha</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Edwin Oroko</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Daniel Kirwa</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Lincoln Wagacha</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Austin & Emma</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Peter Oduori</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Benard Ndege</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">David Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 81-90 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 81-90: <span class="font-bold text-indigo-600">$908.97</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Timothy Sirkoi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Douglas</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Bob Mwiti</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Wilson Njenga</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Anthony Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jeremy Kemboi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mathew & Doreen <em class="text-xs text-gray-500 ml-1">(Received Ksh. 5000.00)</em></span><span class="contributor-amount font-mono font-semibold text-green-700">$38.97</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joyce Gachanja</span><span class="contributor-amount font-mono font-semibold text-green-700">$70.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Susan & Terry Ductan</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Abija Muembu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 91-100 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 91-100: <span class="font-bold text-indigo-600">$1,000.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jane Lydia</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Caroline Lugalia</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Sam & Tabitha</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Sam & Rahab</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Loise & Ron</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Beatrice Kamau</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">James & Ann Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Eliza & Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Veronica Williams</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mueni & Ambrose</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 101-110 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 101-110: <span class="font-bold text-indigo-600">$1,350.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Laura Wright</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mr & Mrs Gatete</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Bella Kaburu</span><span class="contributor-amount font-mono font-semibold text-green-700">$250.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Margret Kuria</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Damaris Mbugua</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Lucy Waweru</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">James, Emily & Family</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Phloice Odawa</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Caroline Karanja</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jeniffer Mulili</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                </ul>
-            </div>
-
-            <!-- Group 111-112 -->
-            <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 111-112: <span class="font-bold text-indigo-600">$450.00</span></h2>
-                <ul class="space-y-3">
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">David & Fatuma Towett</span><span class="contributor-amount font-mono font-semibold text-green-700">$250.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Kamau & Angelica</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
-                </ul>
-            </div>
-
+            <!-- Loading spinner will be shown here -->
         </div>
 
         <!-- No Results Message -->
@@ -302,7 +115,6 @@
             <h3 class="text-lg font-semibold text-gray-700">No contributors found</h3>
             <p class="text-gray-500 mt-1">Try searching for a different name.</p>
         </div>
-
 
         <!-- Footer -->
         <footer class="text-center mt-12">
@@ -312,50 +124,151 @@
     </div>
 
     <script>
-        document.getElementById('searchInput').addEventListener('input', function() {
-            const searchTerm = this.value.toLowerCase();
-            const contributionGroups = document.querySelectorAll('.contribution-group');
-            let totalResults = 0;
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const contributionsGrid = document.getElementById('contributionsGrid');
+            const totalAmountEl = document.getElementById('totalAmount');
+            const searchInput = document.getElementById('searchInput');
 
-            contributionGroups.forEach(group => {
-                const contributors = group.querySelectorAll('li');
-                let groupHasVisibleResult = false;
+            // --- Data Source from GitHub ---
+            const GITHUB_CSV_URL = 'https://raw.githubusercontent.com/codeAmani-Solutions/Becky-s-Fundraising/refs/heads/main/Contributions_List_With_Total.csv';
 
-                contributors.forEach(contributor => {
-                    const name = contributor.querySelector('.contributor-name').textContent.toLowerCase();
-                    if (name.includes(searchTerm)) {
-                        contributor.style.display = 'flex';
-                        groupHasVisibleResult = true;
-                        totalResults++;
+            async function loadContributions() {
+                showLoadingSpinner();
+                try {
+                    const response = await fetch(GITHUB_CSV_URL);
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok: ${response.statusText}`);
+                    }
+                    const csvData = await response.text();
+                    const contributions = parseCsv(csvData);
+                    renderData(contributions);
+
+                } catch (error) {
+                    contributionsGrid.innerHTML = `<p class="text-red-500 text-center col-span-2">Failed to load contributions: ${error.message}</p>`;
+                }
+            }
+
+            function showLoadingSpinner() {
+                contributionsGrid.innerHTML = '<div class="loader col-span-2"></div>';
+            }
+
+            function parseCsv(csvText) {
+                const lines = csvText.trim().split('\n');
+                const data = [];
+                // Start from 1 to skip the header row
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i].trim();
+                    if (!line) continue;
+
+                    const firstCommaIndex = line.indexOf(',');
+                    if (firstCommaIndex === -1) continue;
+
+                    const lastCommaIndex = line.lastIndexOf(',');
+                    if (lastCommaIndex === -1 || lastCommaIndex === firstCommaIndex) continue;
+
+                    let name = line.substring(firstCommaIndex + 1, lastCommaIndex).trim();
+                    let amountStr = line.substring(lastCommaIndex + 1).trim();
+
+                    // Clean up name (remove surrounding quotes)
+                    if (name.startsWith('"') && name.endsWith('"')) {
+                        name = name.slice(1, -1);
+                    }
+
+                    // Clean up amount (remove quotes, $, and commas)
+                    amountStr = amountStr.replace(/["$,]/g, '');
+                    
+                    const amount = parseFloat(amountStr);
+
+                    if (name && !isNaN(amount)) {
+                        data.push({ name, amount });
+                    }
+                }
+                // This is a special case from your data that needs to be manually added for now
+                data.push({ name: "Mathew & Doreen (Received Ksh. 5000.00)", amount: 38.97 });
+                return data;
+            }
+
+            function renderData(contributions) {
+                contributionsGrid.innerHTML = '';
+
+                const total = contributions.reduce((sum, item) => sum + item.amount, 0);
+                totalAmountEl.textContent = `$${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                const groupSize = 10;
+                for (let i = 0; i < contributions.length; i += groupSize) {
+                    const group = contributions.slice(i, i + groupSize);
+                    const groupStart = i + 1;
+                    const groupEnd = i + group.length;
+                    
+                    const groupTotal = group.reduce((sum, item) => sum + item.amount, 0);
+
+                    const groupEl = document.createElement('div');
+                    groupEl.className = 'contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200';
+                    
+                    let listItemsHtml = '';
+                    group.forEach(item => {
+                        const nameHtml = item.name.replace(/\((.*?)\)/g, '<em class="text-xs text-gray-500 ml-1">($1)</em>');
+                        listItemsHtml += `
+                            <li class="flex justify-between items-center">
+                                <span class="contributor-name text-gray-600">${nameHtml}</span>
+                                <span class="contributor-amount font-mono font-semibold text-green-700">$${item.amount.toFixed(2)}</span>
+                            </li>
+                        `;
+                    });
+
+                    groupEl.innerHTML = `
+                        <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">
+                            Contributions ${groupStart}-${groupEnd}: 
+                            <span class="font-bold text-indigo-600">$${groupTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                        </h2>
+                        <ul class="space-y-3">${listItemsHtml}</ul>
+                    `;
+                    contributionsGrid.appendChild(groupEl);
+                }
+            }
+
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const contributionGroups = document.querySelectorAll('.contribution-group');
+                let totalResults = 0;
+
+                contributionGroups.forEach(group => {
+                    const contributors = group.querySelectorAll('li');
+                    let groupHasVisibleResult = false;
+
+                    contributors.forEach(contributor => {
+                        const name = contributor.querySelector('.contributor-name').textContent.toLowerCase();
+                        if (name.includes(searchTerm)) {
+                            contributor.style.display = 'flex';
+                            groupHasVisibleResult = true;
+                            totalResults++;
+                        } else {
+                            contributor.style.display = 'none';
+                        }
+                    });
+
+                    if (groupHasVisibleResult) {
+                        group.style.display = 'block';
                     } else {
-                        contributor.style.display = 'none';
+                        group.style.display = 'none';
                     }
                 });
 
-                if (groupHasVisibleResult) {
-                    group.style.display = 'block';
+                const noResultsMessage = document.getElementById('noResults');
+                if (totalResults === 0 && searchTerm !== '') {
+                    noResultsMessage.style.display = 'block';
+                    contributionsGrid.style.display = 'none';
                 } else {
-                    group.style.display = 'none';
+                    noResultsMessage.style.display = 'none';
+                    contributionsGrid.style.display = 'grid';
                 }
             });
 
-            const noResultsMessage = document.getElementById('noResults');
-            const grid = document.getElementById('contributionsGrid');
-
-            if (totalResults === 0 && searchTerm !== '') {
-                noResultsMessage.style.display = 'block';
-                grid.style.display = 'none'; // Hide the grid container
-            } else {
-                noResultsMessage.style.display = 'none';
-                grid.style.display = 'grid'; // Show the grid container
-            }
+            loadContributions();
         });
     </script>
 
 </body>
 </html>
-
-
-
-
 
