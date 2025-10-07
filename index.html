@@ -34,7 +34,7 @@
 
         <!-- Header --><header class="text-center mb-8 md:mb-12">
             <h1 class="text-3xl md:text-4xl font-bold text-pink-600">Becky's Support Group</h1>
-            <p class="mt-2 text-md text-gray-600">💕 Happy Tuesday Dear One's 💕</p>
+            <p id="dailyGreeting" class="mt-2 text-md text-gray-600">💕 Happy Tuesday Dear One's 💕</p>
         </header>
         
         <!-- Fallback Data Warning --><div id="fallbackWarning" class="hidden bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 rounded-md" role="alert">
@@ -51,7 +51,7 @@
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                      <path fill-rule="evenodd" d="M8 4a4 4 a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                     </svg>
                 </div>
                 <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search for a contributor...">
@@ -112,7 +112,7 @@
         <!-- Footer --><footer class="text-center mt-16 space-y-4">
             <div>
                 <a href="mailto:info+beckysupportlead@codemani.com" class="inline-block bg-pink-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all transform hover:scale-105">
-                    Contact
+                    Contact Support Lead
                 </a>
             </div>
             <p class="text-sm text-gray-500 pt-2">Page generated on October 7, 2025.</p>
@@ -247,6 +247,20 @@
 110,David & Fatuma Towett,$250.00
 111,Kamau & Angelica,$200.00
 `;
+            
+            function updateDailyGreeting() {
+                try {
+                    const now = new Date();
+                    const options = { weekday: 'long', timeZone: 'America/New_York' };
+                    const dayOfWeek = new Intl.DateTimeFormat('en-US', options).format(now);
+                    const greetingElement = document.getElementById('dailyGreeting');
+                    if (greetingElement) {
+                        greetingElement.innerHTML = `💕 Happy ${dayOfWeek} Dear One's 💕`;
+                    }
+                } catch (e) {
+                    console.error("Could not update daily greeting:", e);
+                }
+            }
 
             async function loadContributions() {
                 showLoadingSpinner();
@@ -360,6 +374,7 @@
                 contributionsGrid.style.display = totalResults === 0 && searchTerm !== '' ? 'none' : 'grid';
             });
 
+            updateDailyGreeting();
             loadContributions();
         });
     </script>
