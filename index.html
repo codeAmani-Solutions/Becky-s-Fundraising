@@ -33,6 +33,18 @@
             <h2 class="text-lg font-medium text-indigo-200">Total Contributions Received</h2>
             <p class="text-4xl sm:text-5xl font-bold tracking-tight mt-2">$20,933.97</p>
         </div>
+        
+        <!-- Search Input -->
+        <div class="mb-10">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search for a contributor...">
+            </div>
+        </div>
 
         <!-- Update, Contribution, and Zoom sections -->
         <!-- This grid is a single column on mobile and switches to two columns on large screens (lg:) -->
@@ -75,9 +87,9 @@
                      <h2 class="text-xl font-bold text-gray-800 mb-4">Prayer & Thanksgiving Zoom</h2>
                      <p class="text-gray-600 mb-4">Becky's family would like to thank everyone on this day.</p>
                      <ul class="space-y-3 text-gray-700">
-                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><strong>Date:</strong><span class="ml-2">Next Week Tuesday (October 14th, 2025)</span></li>
+                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><strong>Date:</strong><span class="ml-2">Today, Tuesday (October 7, 2025)</span></li>
                         <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><strong>Time:</strong><span class="ml-2">8:00 PM</span></li>
-                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg><strong>Zoom Link:</strong><span class="ml-2">To be shared shortly.</span></li>
+                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg><strong>Zoom Link:</strong><span class="ml-2">To be shared shortly (/alternatively check the WhatsApp group for link).</span></li>
                      </ul>
                 </div>
             </div>
@@ -85,11 +97,11 @@
 
         <!-- Contributions Grid -->
         <!-- This grid is a single column on mobile and switches to two columns on medium screens (md:) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div id="contributionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
             <!-- Group 1-10 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 1-10: <span class="font-bold text-indigo-600">$3,325.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 1-10: <span class="font-bold text-indigo-600">$3,325.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Queens Beckys Florida Chama group</span><span class="contributor-amount font-mono font-semibold text-green-700">$2,000.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Neema & Jeff</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -106,7 +118,7 @@
 
             <!-- Group 11-20 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 11-20: <span class="font-bold text-indigo-600">$1,150.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 11-20: <span class="font-bold text-indigo-600">$1,150.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Lynette Kamiti</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Ann Mbuthia</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -123,7 +135,7 @@
 
             <!-- Group 21-30 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 21-30: <span class="font-bold text-indigo-600">$4,850.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 21-30: <span class="font-bold text-indigo-600">$4,850.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Nova & Pam</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Wilson & Susan</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -140,7 +152,7 @@
             
             <!-- Group 31-40 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 31-40: <span class="font-bold text-indigo-600">$1,800.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 31-40: <span class="font-bold text-indigo-600">$1,800.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joe & Kezia</span><span class="contributor-amount font-mono font-semibold text-green-700">$500.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Morris & Rebecca W</span><span class="contributor-amount font-mono font-semibold text-green-700">$250.00</span></li>
@@ -157,7 +169,7 @@
 
             <!-- Group 41-50 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 41-50: <span class="font-bold text-indigo-600">$2,250.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 41-50: <span class="font-bold text-indigo-600">$2,250.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Dicky & Maggie K</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Muthoni Otwoma</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
@@ -174,7 +186,7 @@
 
             <!-- Group 51-60 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 51-60: <span class="font-bold text-indigo-600">$1,350.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 51-60: <span class="font-bold text-indigo-600">$1,350.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Eddie & Judy</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joel & Curry</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -191,7 +203,7 @@
 
             <!-- Group 61-70 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 61-70: <span class="font-bold text-indigo-600">$1,250.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 61-70: <span class="font-bold text-indigo-600">$1,250.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Edna Kimanzi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Pst Dennis & Betty Tesot</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -208,7 +220,7 @@
 
             <!-- Group 71-80 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 71-80: <span class="font-bold text-indigo-600">$1,250.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 71-80: <span class="font-bold text-indigo-600">$1,250.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Fred Muhanji</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Samuel Kimiti</span><span class="contributor-amount font-mono font-semibold text-green-700">$150.00</span></li>
@@ -225,7 +237,7 @@
 
             <!-- Group 81-90 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 81-90: <span class="font-bold text-indigo-600">$908.97</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 81-90: <span class="font-bold text-indigo-600">$908.97</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Timothy Sirkoi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Douglas</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -233,7 +245,7 @@
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Wilson Njenga</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Anthony Kimani</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jeremy Kemboi</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
-                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mathew & Doreen</span><span class="contributor-amount font-mono font-semibold text-green-700">$38.97</span></li>
+                    <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mathew & Doreen <em class="text-xs text-gray-500 ml-1">(Received Ksh. 5000.00)</em></span><span class="contributor-amount font-mono font-semibold text-green-700">$38.97</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Joyce Gachanja</span><span class="contributor-amount font-mono font-semibold text-green-700">$70.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Susan & Terry Ductan</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Abija Muembu</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
@@ -242,7 +254,7 @@
 
             <!-- Group 91-100 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 91-100: <span class="font-bold text-indigo-600">$1,000.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 91-100: <span class="font-bold text-indigo-600">$1,000.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Jane Lydia</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Caroline Lugalia</span><span class="contributor-amount font-mono font-semibold text-green-700">$50.00</span></li>
@@ -259,7 +271,7 @@
 
             <!-- Group 101-110 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 101-110: <span class="font-bold text-indigo-600">$1,350.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 101-110: <span class="font-bold text-indigo-600">$1,350.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Laura Wright</span><span class="contributor-amount font-mono font-semibold text-green-700">$100.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Mr & Mrs Gatete</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
@@ -276,7 +288,7 @@
 
             <!-- Group 111-112 -->
             <div class="contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200">
-                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Entries 111-112: <span class="font-bold text-indigo-600">$450.00</span></h2>
+                <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-4">Contributions 111-112: <span class="font-bold text-indigo-600">$450.00</span></h2>
                 <ul class="space-y-3">
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">David & Fatuma Towett</span><span class="contributor-amount font-mono font-semibold text-green-700">$250.00</span></li>
                     <li class="flex justify-between items-center"><span class="contributor-name text-gray-600">Kamau & Angelica</span><span class="contributor-amount font-mono font-semibold text-green-700">$200.00</span></li>
@@ -285,6 +297,13 @@
 
         </div>
 
+        <!-- No Results Message -->
+        <div id="noResults" class="text-center py-10 px-4" style="display: none;">
+            <h3 class="text-lg font-semibold text-gray-700">No contributors found</h3>
+            <p class="text-gray-500 mt-1">Try searching for a different name.</p>
+        </div>
+
+
         <!-- Footer -->
         <footer class="text-center mt-12">
             <p class="text-sm text-gray-500">Page generated on October 7, 2025.</p>
@@ -292,6 +311,51 @@
 
     </div>
 
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const contributionGroups = document.querySelectorAll('.contribution-group');
+            let totalResults = 0;
+
+            contributionGroups.forEach(group => {
+                const contributors = group.querySelectorAll('li');
+                let groupHasVisibleResult = false;
+
+                contributors.forEach(contributor => {
+                    const name = contributor.querySelector('.contributor-name').textContent.toLowerCase();
+                    if (name.includes(searchTerm)) {
+                        contributor.style.display = 'flex';
+                        groupHasVisibleResult = true;
+                        totalResults++;
+                    } else {
+                        contributor.style.display = 'none';
+                    }
+                });
+
+                if (groupHasVisibleResult) {
+                    group.style.display = 'block';
+                } else {
+                    group.style.display = 'none';
+                }
+            });
+
+            const noResultsMessage = document.getElementById('noResults');
+            const grid = document.getElementById('contributionsGrid');
+
+            if (totalResults === 0 && searchTerm !== '') {
+                noResultsMessage.style.display = 'block';
+                grid.style.display = 'none'; // Hide the grid container
+            } else {
+                noResultsMessage.style.display = 'none';
+                grid.style.display = 'grid'; // Show the grid container
+            }
+        });
+    </script>
+
 </body>
 </html>
+
+
+
+
 
