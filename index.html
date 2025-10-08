@@ -8,9 +8,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark')
+        } else {
+          document.documentElement.classList.remove('dark')
+        }
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
+            overflow-x: hidden; /* Prevent horizontal scroll from confetti */
         }
         /* Style for loading spinner */
         .loader {
@@ -26,97 +35,153 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Animation for fade-in on scroll */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* A generic class for the hover effect on all cards */
+        .interactive-card {
+             transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .interactive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .dark .interactive-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+        }
+        
+        /* --- Confetti Styles --- */
+        #confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00; /* Default color */
+            opacity: 0.7;
+            animation: fall 5s linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <div id="confetti-container"></div>
+    <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl relative">
 
-    <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl">
+        <!-- Theme Toggle Button --><div class="absolute top-5 right-4 z-50">
+            <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
 
-        <!-- Header --><header class="text-center mb-8 md:mb-12">
+        <!-- Header --><header class="text-center mb-8 md:mb-12 fade-in-section pt-12 md:pt-10">
             <h1 class="text-3xl md:text-4xl font-bold text-pink-600">Becky's Support Group</h1>
-            <p id="dailyGreeting" class="mt-2 text-md text-gray-600">💕 Happy Tuesday Dear One's 💕</p>
+            <p id="dailyGreeting" class="mt-2 text-md text-gray-600 dark:text-gray-400">💕 Happy Tuesday Dear One's 💕</p>
         </header>
+
+        <!-- Thank You Message --><div class="bg-pink-50 dark:bg-pink-900/20 border-l-4 border-pink-500 text-pink-800 dark:text-pink-300 p-6 rounded-lg shadow-md text-center mb-10 fade-in-section interactive-card">
+            <p class="font-semibold text-lg">💕 Dear friends / family 💕</p>
+            <p class="mt-3">Thank-you Thank you everyone for the outstanding support ! May this kinda love grow stronger.</p>
+            <p class="mt-3 font-semibold">God bless you richly.</p>
+        </div>
         
         <!-- Fallback Data Warning --><div id="fallbackWarning" class="hidden bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-8 rounded-md" role="alert">
           <p class="font-bold">Displaying Backup Data</p>
           <p>Could not fetch the live contribution list from GitHub. Displaying a locally stored version. The list may not be fully up-to-date.</p>
         </div>
 
-        <!-- Total Summary Card --><div class="bg-indigo-600 text-white rounded-xl shadow-lg p-6 sm:p-8 mb-10 text-center">
-            <h2 class="text-lg font-medium text-indigo-200">Total Contributions Received</h2>
-            <p id="totalAmount" class="text-4xl sm:text-5xl font-bold tracking-tight mt-2">$0.00</p>
+        <!-- Total Summary Card --><div class="bg-indigo-600 text-white rounded-xl shadow-lg p-4 sm:p-8 mb-10 text-center fade-in-section interactive-card sticky top-4 z-40">
+            <h2 class="text-md sm:text-lg font-medium text-indigo-200">Total Contributions Received</h2>
+            <p id="totalAmount" class="text-4xl sm:text-5xl font-bold tracking-tight mt-1 sm:mt-2">$0.00</p>
         </div>
         
-        <!-- Search Input --><div class="mb-10">
+        <!-- Search Input --><div class="mb-10 fade-in-section">
             <div class="relative">
                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M8 4a4 4 a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                      <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                     </svg>
                 </div>
-                <input type="text" id="searchInput" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search for a contributor...">
+                <input type="text" id="searchInput" class="block w-full max-w-full pl-10 pr-3 py-3 border border-gray-300 dark:border-gray-600 rounded-lg leading-5 bg-white dark:bg-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-base" placeholder="Search for a contributor...">
             </div>
         </div>
 
-        <!-- Update, Contribution, and Zoom sections --><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
-            <!-- Tremendous Update Card --><div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-pink-500">
-                <h2 class="text-xl font-bold text-gray-800 flex items-center mb-4">
+        <!-- Update, Contribution sections --><div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+            <!-- Tremendous Update Card --><div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-l-4 border-pink-500 fade-in-section interactive-card">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 flex items-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                     </svg>
                     A Tremendous Update!
                 </h2>
-                <div class="space-y-4 text-gray-600">
+                <div class="space-y-4 text-gray-600 dark:text-gray-300">
                     <p class="font-semibold">A tremendous update! What a God what a God!</p>
-                    <p>Many thanks for the tremendous support you have continued to show sis <strong>Becky & family</strong> during recovery. It's amazing how unified prayers have moved mountains. <span class="text-pink-600 font-semibold">She is healing gently at home! Glory to God.</span></p>
+                    <p>Many thanks for the tremendous support you have continued to show sis <strong>Becky & family</strong> during recovery. It's amazing how unified prayers have moved mountains. <span class="text-pink-600 dark:text-pink-400 font-semibold">She is healing gently at home! Glory to God.</span></p>
                     <p>Becky had doctor's follow-up appointments since discharge. Her road to recovery per the medical doctors is estimated to take <strong>over 6 months</strong> due to traumatic brain injury. Let us continue uplifting the entire family in prayers as they navigate this recovery journey.</p>
                     <p>Just a friendly reminder the group will be closing this <strong>weekend of October 11th</strong>.</p>
                 </div>
             </div>
 
-            <!-- Contribution & Zoom Info --><div class="space-y-8">
-                <!-- Contribution Channels Card --><div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-yellow-500">
-                    <h2 class="text-xl font-bold text-gray-800 mb-4">Contribution Channels</h2>
-                    <p class="text-gray-600 mb-4">Husband: Samson Wagacha</p>
+            <!-- Contribution Info --><div class="space-y-8 fade-in-section">
+                <!-- Contribution Channels Card --><div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border-l-4 border-yellow-500 interactive-card">
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Contribution Channels</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Husband: Samson Wagacha</p>
                     <ul class="space-y-3">
-                        <li class="flex flex-wrap justify-between items-center bg-yellow-50 p-3 rounded-md">
+                        <li class="flex flex-wrap justify-between items-center bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md">
                             <span class="font-semibold">Cash App:</span>
-                            <span class="font-mono text-pink-600 font-bold">$Samwagacha</span>
+                            <span class="font-mono text-pink-600 dark:text-pink-400 font-bold">$Samwagacha</span>
                         </li>
-                        <li class="flex flex-wrap justify-between items-center bg-yellow-50 p-3 rounded-md">
+                        <li class="flex flex-wrap justify-between items-center bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-md">
                             <span class="font-semibold">Zelle:</span>
-                            <span class="font-mono text-pink-600 font-bold">(815) 280-8479</span>
+                            <span class="font-mono text-pink-600 dark:text-pink-400 font-bold">(815) 280-8479</span>
                         </li>
                     </ul>
                 </div>
-                <!-- Prayer & Thanksgiving Zoom Card --><div class="bg-white p-6 rounded-lg shadow-md border-l-4 border-pink-500">
-                     <h2 class="text-xl font-bold text-gray-800 mb-4">Prayer & Thanksgiving Zoom</h2>
-                     <p class="text-gray-600 mb-4">Becky's family would like to thank everyone on this day.</p>
-                     <ul class="space-y-3 text-gray-700">
-                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg><strong>Date:</strong><span class="ml-2">Today, Tuesday (October 7, 2025)</span></li>
-                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg><strong>Time:</strong><span class="ml-2">8:00 PM</span></li>
-                        <li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-pink-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg><strong>Zoom Link:</strong><span class="ml-2">To be shared shortly (/alternatively check the WhatsApp group for link).</span></li>
-                     </ul>
-                </div>
             </div>
         </div>
 
-        <!-- Contributions Grid --><!-- This container will be filled dynamically by JavaScript --><div id="contributionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Contributions Grid --><div id="contributionsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <!-- Loading spinner will be shown here --></div>
 
         <!-- No Results Message --><div id="noResults" class="text-center py-10 px-4" style="display: none;">
-            <h3 class="text-lg font-semibold text-gray-700">No contributors found</h3>
-            <p class="text-gray-500 mt-1">Try searching for a different name.</p>
+            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-300">No contributors found</h3>
+            <p class="text-gray-500 dark:text-gray-400 mt-1">Try searching for a different name.</p>
         </div>
 
-        <!-- Footer --><footer class="text-center mt-16 space-y-4">
+        <!-- Footer --><footer class="text-center mt-16 space-y-4 fade-in-section">
             <div>
                 <a href="mailto:info+beckysupportlead@codemani.com" class="inline-block bg-pink-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-500 transition-all transform hover:scale-105">
-                    Contact Support Lead
+                    Contact
                 </a>
             </div>
-            <p class="text-sm text-gray-500 pt-2">Page generated on October 7, 2025.</p>
-            <p class="text-sm text-gray-600">Built by <a href="https://codeamani.com" target="_blank" class="text-indigo-600 hover:underline">codeAmani Solutions</a></p>
+            <p class="text-sm text-gray-500 dark:text-gray-400 pt-2">Page generated on October 7, 2025.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">Built by <a href="https://codeamani.com" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">codeAmani Solutions</a></p>
         </footer>
 
     </div>
@@ -248,37 +313,57 @@
 111,Kamau & Angelica,$200.00
 `;
             
+            // --- THEME TOGGLE LOGIC ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            function setTheme(isDark) {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.theme = 'dark';
+                    themeToggleLightIcon.classList.remove('hidden');
+                    themeToggleDarkIcon.classList.add('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.theme = 'light';
+                    themeToggleDarkIcon.classList.remove('hidden');
+                    themeToggleLightIcon.classList.add('hidden');
+                }
+            }
+
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                setTheme(true);
+            } else {
+                setTheme(false);
+            }
+            
+            themeToggleBtn.addEventListener('click', function() {
+                setTheme(!document.documentElement.classList.contains('dark'));
+            });
+
+            // --- DAILY GREETING ---
             function updateDailyGreeting() {
                 try {
                     const now = new Date();
                     const options = { weekday: 'long', timeZone: 'America/New_York' };
                     const dayOfWeek = new Intl.DateTimeFormat('en-US', options).format(now);
-                    const greetingElement = document.getElementById('dailyGreeting');
-                    if (greetingElement) {
-                        greetingElement.innerHTML = `💕 Happy ${dayOfWeek} Dear One's 💕`;
-                    }
-                } catch (e) {
-                    console.error("Could not update daily greeting:", e);
-                }
+                    document.getElementById('dailyGreeting').innerHTML = `💕 Happy ${dayOfWeek} Dear One's 💕`;
+                } catch (e) { console.error("Could not update daily greeting:", e); }
             }
 
+            // --- DATA LOADING & PARSING ---
             async function loadContributions() {
                 showLoadingSpinner();
                 try {
-                    // Try to fetch live data
                     const response = await fetch(GITHUB_CSV_URL);
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok: ${response.statusText}`);
-                    }
+                    if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
                     const csvData = await response.text();
-                    const contributions = parseCsv(csvData);
-                    renderData(contributions);
+                    renderData(parseCsv(csvData));
                 } catch (error) {
-                    // If fetching fails, use the fallback data
                     console.warn("Could not fetch from GitHub, using fallback data. Error:", error);
                     fallbackWarning.classList.remove('hidden');
-                    const contributions = parseCsv(fallbackCsvData);
-                    renderData(contributions);
+                    renderData(parseCsv(fallbackCsvData));
                 }
             }
 
@@ -289,39 +374,62 @@
             function parseCsv(csvText) {
                 const lines = csvText.trim().split('\n');
                 const data = [];
-                for (let i = 1; i < lines.length; i++) { // Start at 1 to skip header
+                for (let i = 1; i < lines.length; i++) {
                     const line = lines[i].trim();
                     if (!line) continue;
-                    
                     const matches = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
                     if (!matches || matches.length < 3) continue;
-
-                    let name = matches[1].trim();
-                    if (name.startsWith('"') && name.endsWith('"')) {
-                        name = name.slice(1, -1);
-                    }
-                    
+                    let name = matches[1].trim().replace(/"/g, '');
                     let amountStr = matches[2].trim().replace(/["$,]/g, '');
                     const amount = parseFloat(amountStr);
-
-                    if (name && !isNaN(amount)) {
-                        data.push({ name, amount });
-                    }
+                    if (name && !isNaN(amount)) data.push({ name, amount });
                 }
-                // Special handling for Mathew & Doreen: This entry is not in your CSV, so adding it here
-                // It's important that this is done *after* parsing the CSV
-                // and includes a check to prevent duplication if it's ever added to the CSV itself.
-                const mathewDoreenExistsInCsv = data.some(item => item.name.includes("Mathew & Doreen"));
-                if (!mathewDoreenExistsInCsv) {
+                if (!data.some(item => item.name.includes("Mathew & Doreen"))) {
                      data.push({ name: "Mathew & Doreen (Received Ksh. 5000.00)", amount: 38.97 });
                 }
                 return data;
             }
 
+            // --- CONFETTI ---
+            function triggerConfetti() {
+                const container = document.getElementById('confetti-container');
+                const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4caf50', '#8bc34a', '#cddc39', '#ffeb3b', '#ffc107', '#ff9800'];
+                for (let i = 0; i < 100; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    confetti.style.animationDelay = `${Math.random() * 2}s`;
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    container.appendChild(confetti);
+                }
+                setTimeout(() => { container.innerHTML = '' }, 5000); // Clean up
+            }
+
+            // --- UI RENDERING & ANIMATIONS ---
+            function animateCountUp(el, to) {
+                let start = 0;
+                const duration = 3000;
+                const startTime = performance.now();
+
+                function step(currentTime) {
+                    const elapsedTime = currentTime - startTime;
+                    const progress = Math.min(elapsedTime / duration, 1);
+                    const current = start + (to - start) * progress;
+                    el.textContent = `$${current.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        el.textContent = `$${to.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                        triggerConfetti(); // Celebration!
+                    }
+                }
+                requestAnimationFrame(step);
+            }
+
             function renderData(contributions) {
                 contributionsGrid.innerHTML = '';
                 const total = contributions.reduce((sum, item) => sum + item.amount, 0);
-                totalAmountEl.textContent = `$${total.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                animateCountUp(totalAmountEl, total);
 
                 const groupSize = 10;
                 for (let i = 0; i < contributions.length; i += groupSize) {
@@ -330,24 +438,41 @@
                     const groupEnd = i + group.length;
                     const groupTotal = group.reduce((sum, item) => sum + item.amount, 0);
                     const groupEl = document.createElement('div');
-                    groupEl.className = 'contribution-group bg-white p-6 rounded-lg shadow-md border border-gray-200';
+                    groupEl.className = 'contribution-group bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 fade-in-section interactive-card';
                     let listItemsHtml = '';
                     group.forEach(item => {
-                        const nameHtml = item.name.replace(/\((.*?)\)/g, '<em class="text-xs text-gray-500 ml-1">($1)</em>');
+                        const nameHtml = item.name.replace(/\((.*?)\)/g, '<em class="text-xs text-gray-500 dark:text-gray-400 ml-1">($1)</em>');
                         listItemsHtml += `
-                            <li class="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0">
-                                <span class="contributor-name text-gray-600">${nameHtml}</span>
-                                <span class="contributor-amount font-mono font-semibold text-green-700">$${item.amount.toFixed(2)}</span>
+                            <li class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                                <span class="contributor-name text-gray-600 dark:text-gray-300">${nameHtml}</span>
+                                <span class="contributor-amount font-mono font-semibold text-green-700 dark:text-green-400">$${item.amount.toFixed(2)}</span>
                             </li>`;
                     });
                     groupEl.innerHTML = `
-                        <h2 class="text-lg font-semibold text-gray-700 border-b pb-3 mb-3">
+                        <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-200 border-b dark:border-gray-600 pb-3 mb-3">
                             Contributions ${groupStart}-${groupEnd}: 
-                            <span class="font-bold text-indigo-600">$${groupTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                            <span class="font-bold text-indigo-600 dark:text-indigo-400">$${groupTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                         </h2>
                         <ul class="space-y-1">${listItemsHtml}</ul>`;
                     contributionsGrid.appendChild(groupEl);
                 }
+                setupFadeInObserver();
+            }
+
+            function setupFadeInObserver() {
+                const sections = document.querySelectorAll('.fade-in-section');
+                const observer = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('is-visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.1 });
+
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
             }
 
             searchInput.addEventListener('input', function() {
@@ -369,13 +494,14 @@
                     });
                     group.style.display = groupHasVisibleResult ? 'block' : 'none';
                 });
-                const noResultsMessage = document.getElementById('noResults');
-                noResultsMessage.style.display = totalResults === 0 && searchTerm !== '' ? 'block' : 'none';
+                document.getElementById('noResults').style.display = totalResults === 0 && searchTerm !== '' ? 'block' : 'none';
                 contributionsGrid.style.display = totalResults === 0 && searchTerm !== '' ? 'none' : 'grid';
             });
-
+            
+            // --- INITIAL SETUP ---
             updateDailyGreeting();
             loadContributions();
+            setupFadeInObserver(); 
         });
     </script>
 
