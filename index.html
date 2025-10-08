@@ -17,11 +17,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script>
-        // Set theme on initial load to prevent flashing
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-          document.documentElement.classList.add('dark')
+        // Set theme on initial load to prevent flashing. Defaults to dark unless 'light' is explicitly saved.
+        if (localStorage.theme === 'light') {
+          document.documentElement.classList.remove('dark');
         } else {
-          document.documentElement.classList.remove('dark')
+          document.documentElement.classList.add('dark');
         }
     </script>
     <style>
@@ -61,12 +61,14 @@
              transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        .interactive-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .dark .interactive-card:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+        @media (hover: hover) {
+            .interactive-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            }
+            .dark .interactive-card:hover {
+                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.25);
+            }
         }
         
         /* --- Confetti Styles --- */
@@ -139,9 +141,23 @@
         input:checked + .slider:before {
             transform: translateX(24px);
         }
+        
+        /* --- Styles for the contributor animation --- */
+        .contributor-item {
+            /* This transition allows the row to smoothly "snap back" */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        .highlight-contributor {
+            background-color: rgba(236, 72, 153, 0.2);
+            transform: scale(1.05); /* The "zoom in" effect */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); /* The 3D shadow */
+            position: relative; /* Needed for z-index */
+            z-index: 10; /* Ensures it pops above other rows */
+        }
     </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+<body class="bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
     <div id="confetti-container"></div>
     <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl relative">
 
@@ -386,8 +402,8 @@
                 themeCheckbox.checked = isDark;
             }
 
-            // Set initial state of the slider
-            const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            // Set initial state of the slider, defaulting to dark unless light is saved.
+            const isDarkMode = localStorage.getItem('theme') !== 'light';
             applyTheme(isDarkMode);
 
             // Listen for changes on the slider
@@ -438,11 +454,15 @@
                     const response = await fetch(GITHUB_CSV_URL);
                     if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
                     const csvData = await response.text();
-                    renderData(parseCsv(csvData));
+                    const contributions = parseCsv(csvData);
+                    renderData(contributions);
+                    startSequentialAnimation(contributions); // Start the new animation
                 } catch (error) {
                     console.warn("Could not fetch from GitHub, using fallback data. Error:", error);
                     fallbackWarning.classList.remove('hidden');
-                    renderData(parseCsv(fallbackCsvData));
+                    const contributions = parseCsv(fallbackCsvData);
+                    renderData(contributions);
+                    startSequentialAnimation(contributions); // Start the new animation
                 }
             }
 
@@ -502,30 +522,48 @@
             }
 
             // --- UI RENDERING & ANIMATIONS ---
-            function animateCountUp(el, to) {
-                let start = 0;
-                const duration = 3000;
-                const startTime = performance.now();
+            function startSequentialAnimation(contributions) {
+                let currentTotal = 0;
+                let contributorIndex = 0;
+                
+                const allContributorElements = document.querySelectorAll('.contributor-item');
 
-                function step(currentTime) {
-                    const elapsedTime = currentTime - startTime;
-                    const progress = Math.min(elapsedTime / duration, 1);
-                    const current = start + (to - start) * progress;
-                    el.textContent = `$${current.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                    if (progress < 1) {
-                        requestAnimationFrame(step);
-                    } else {
-                        el.textContent = `$${to.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-                        startContinuousConfetti(); // Celebration!
+                const interval = setInterval(() => {
+                    if (contributorIndex >= contributions.length) {
+                        clearInterval(interval);
+                        startContinuousConfetti(); // Final celebration
+                        // Ensure last element loses its highlight
+                         if (contributorIndex > 0) {
+                            allContributorElements[contributorIndex - 1].classList.remove('highlight-contributor');
+                        }
+                        return;
                     }
-                }
-                requestAnimationFrame(step);
+
+                    // Remove highlight from previous element
+                    if (contributorIndex > 0) {
+                        allContributorElements[contributorIndex - 1].classList.remove('highlight-contributor');
+                    }
+                    
+                    const currentContributor = contributions[contributorIndex];
+                    const currentElement = allContributorElements[contributorIndex];
+                    
+                    // Scroll to the element and highlight it
+                    currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    currentElement.classList.add('highlight-contributor');
+
+                    // Update total
+                    currentTotal += currentContributor.amount;
+                    totalAmountEl.textContent = `$${currentTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                    contributorIndex++;
+
+                }, 750); // Increased delay to 0.75 seconds
             }
 
             function renderData(contributions) {
                 contributionsGrid.innerHTML = '';
-                const total = contributions.reduce((sum, item) => sum + item.amount, 0);
-                animateCountUp(totalAmountEl, total);
+                // The total will be set to 0 initially, and updated by the animation
+                totalAmountEl.textContent = '$0.00';
 
                 const groupSize = 10;
                 for (let i = 0; i < contributions.length; i += groupSize) {
@@ -539,7 +577,7 @@
                     group.forEach(item => {
                         const nameHtml = item.name.replace(/\((.*?)\)/g, '<em class="text-xs text-gray-500 dark:text-gray-400 ml-1">($1)</em>');
                         listItemsHtml += `
-                            <li class="flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
+                            <li class="contributor-item flex justify-between items-center py-2 border-b border-gray-100 dark:border-gray-700 last:border-b-0">
                                 <span class="contributor-name text-gray-600 dark:text-gray-300">${nameHtml}</span>
                                 <span class="contributor-amount font-mono font-semibold text-green-700 dark:text-green-400">$${item.amount.toFixed(2)}</span>
                             </li>`;
