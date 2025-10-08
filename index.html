@@ -96,6 +96,49 @@
                 opacity: 0;
             }
         }
+        
+        /* --- Theme Slider Styles --- */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 26px;
+            position: relative;
+            width: 50px;
+        }
+        .theme-switch input {
+            display:none;
+        }
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 26px;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 3px;
+            content: "";
+            height: 20px;
+            left: 3px;
+            position: absolute;
+            transition: .4s;
+            width: 20px;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4f46e5; /* Indigo */
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
@@ -103,15 +146,37 @@
     <div class="container mx-auto px-4 py-8 md:py-12 max-w-5xl relative">
 
         <!-- Theme Toggle Button --><div class="absolute top-5 right-4 z-50">
-            <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
-                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
-                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
-            </button>
+             <div class="theme-switch-wrapper">
+                <svg class="w-5 h-5 text-yellow-500 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+                <label class="theme-switch" for="theme-checkbox">
+                    <input type="checkbox" id="theme-checkbox" />
+                    <div class="slider round"></div>
+                </label>
+                 <svg class="w-5 h-5 text-gray-400 dark:text-indigo-400 ml-2" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            </div>
         </div>
 
-        <!-- Header --><header class="text-center mb-8 md:mb-12 fade-in-section pt-12 md:pt-10">
-            <h1 class="text-3xl md:text-4xl font-bold text-pink-600">Becky's Support Group</h1>
-            <p id="dailyGreeting" class="mt-2 text-md text-gray-600 dark:text-gray-400">💕 Happy Tuesday Dear One's 💕</p>
+        <!-- Header --><header class="text-center mb-8 md:mb-12 fade-in-section pt-16 md:pt-10">
+            <div class="flex justify-center items-center gap-4 md:gap-6">
+                <!-- Kenyan Flag -->
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3N2c2I4aGZmMmZqNXN1Z2Y0eGU2cTR0b2Y4eHN0MnZ0ZTNtbnEwZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/26vUxBIpBEp3aFwSk/giphy.gif" 
+                     alt="Waving Kenyan Flag" 
+                     class="w-12 h-8 md:w-16 md:h-10 rounded-md shadow-lg object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/64x40/000000/FFFFFF?text=KE';">
+
+                <h1 class="text-3xl md:text-4xl font-bold text-pink-600">Becky's Support Group</h1>
+                
+                <!-- American Flag -->
+                <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExdWZscjNscjJoM3J2dnp0N2wzc3l0bzJ5eG53dW05cHg0cDJ0eG16eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/eYxNA5m2s3M76/giphy.gif" 
+                     alt="Waving American Flag" 
+                     class="w-12 h-8 md:w-16 md:h-10 rounded-md shadow-lg object-cover"
+                     onerror="this.onerror=null;this.src='https://placehold.co/64x40/3C3B6E/FFFFFF?text=US';">
+            </div>
+            <p id="dailyGreeting" class="mt-4 text-md text-gray-600 dark:text-gray-400">💕 Happy Tuesday Dear One's 💕</p>
+            <div class="mt-4 space-y-2 md:space-y-0 md:flex md:justify-center md:gap-6 text-xs text-gray-500 dark:text-gray-400">
+                <p id="liveClockUS"></p>
+                <p id="liveClockKE"></p>
+            </div>
         </header>
 
         <!-- Thank You Message --><div class="bg-pink-50 dark:bg-pink-900/20 border-l-4 border-pink-500 text-pink-800 dark:text-pink-300 p-6 rounded-lg shadow-md text-center mb-10 fade-in-section interactive-card">
@@ -189,7 +254,6 @@
                     Contact
                 </a>
             </div>
-            <p class="text-sm text-gray-500 dark:text-gray-400 pt-2">Page generated on October 7, 2025.</p>
             <p class="text-sm text-gray-600 dark:text-gray-300">Built by <a href="https://codeamani.com" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline">codeAmani Solutions</a></p>
         </footer>
 
@@ -323,33 +387,28 @@
 `;
             
             // --- THEME TOGGLE LOGIC ---
-            const themeToggleBtn = document.getElementById('theme-toggle');
-            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
-            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+            const themeCheckbox = document.getElementById('theme-checkbox');
 
-            function setTheme(isDark) {
+            function applyTheme(isDark) {
                 if (isDark) {
                     document.documentElement.classList.add('dark');
                     localStorage.theme = 'dark';
-                    themeToggleLightIcon.classList.remove('hidden');
-                    themeToggleDarkIcon.classList.add('hidden');
                 } else {
                     document.documentElement.classList.remove('dark');
                     localStorage.theme = 'light';
-                    themeToggleDarkIcon.classList.remove('hidden');
-                    themeToggleLightIcon.classList.add('hidden');
                 }
+                themeCheckbox.checked = isDark;
             }
 
-            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-                setTheme(true);
-            } else {
-                setTheme(false);
-            }
-            
-            themeToggleBtn.addEventListener('click', function() {
-                setTheme(!document.documentElement.classList.contains('dark'));
+            // Set initial state of the slider
+            const isDarkMode = localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            applyTheme(isDarkMode);
+
+            // Listen for changes on the slider
+            themeCheckbox.addEventListener('change', (e) => {
+                applyTheme(e.target.checked);
             });
+
 
             // --- DAILY GREETING ---
             function updateDailyGreeting() {
@@ -360,6 +419,31 @@
                     document.getElementById('dailyGreeting').innerHTML = `💕 Happy ${dayOfWeek} Dear One's 💕`;
                 } catch (e) { console.error("Could not update daily greeting:", e); }
             }
+            
+            // --- LIVE CLOCKS ---
+            function updateClocks() {
+                try {
+                    const clockUSEl = document.getElementById('liveClockUS');
+                    const clockKEEl = document.getElementById('liveClockKE');
+                    if (!clockUSEl || !clockKEEl) return;
+                    
+                    const now = new Date();
+                    
+                    // US Clock
+                    const usOptions = { timeZone: 'America/New_York', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+                    const usDateTimeString = new Intl.DateTimeFormat('en-US', usOptions).format(now);
+                    clockUSEl.textContent = `US (Tampa): ${usDateTimeString}`;
+                    
+                    // Kenya Clock
+                    const keOptions = { timeZone: 'Africa/Nairobi', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', second: '2-digit', timeZoneName: 'short' };
+                    const keDateTimeString = new Intl.DateTimeFormat('en-US', keOptions).format(now);
+                    clockKEEl.textContent = `Kenya (Nairobi): ${keDateTimeString}`;
+
+                } catch (e) {
+                    console.error("Could not update clocks:", e);
+                }
+            }
+
 
             // --- DATA LOADING & PARSING ---
             async function loadContributions() {
@@ -526,6 +610,8 @@
             
             // --- INITIAL SETUP ---
             updateDailyGreeting();
+            updateClocks(); // Initial call
+            setInterval(updateClocks, 1000); // Update every second
             loadContributions();
             setupFadeInObserver(); 
         });
